@@ -110,6 +110,9 @@ dtbo-$(CONFIG_ARCH_ROCKCHIP) += \
 	rk3588-spi4-m1-cs0-spidev.dtbo \
 	rk3588-spi4-m1-cs1-spidev.dtbo \
 	rk3588-spi4-m2-cs0-spidev.dtbo \
+	rk3588-spi4-m1-cs0-mcp2515-16mhz.dtbo \
+	rk3588-spi4-m1-cs1-mcp2515-16mhz.dtbo \
+	rk3588-spi4-m1-dual-mcp2515-16mhz.dtbo \
 	rk3588-uart0-m2.dtbo \
 	rk3588-uart1-m1.dtbo \
 	rk3588-uart2-m0.dtbo \
@@ -127,8 +130,8 @@ dtbo-$(CONFIG_ARCH_ROCKCHIP) += \
 	rk3588-uart8-m0-full.dtbo \
 	rk3588-uart8-m1.dtbo \
 	rk3588-w1-gpio3-b3.dtbo \
-	rk3588-w1-gpio4-b1.dtbo
-
+	rk3588-w1-gpio4-b1.dtbo \
+	rk3588-westonrobot-communication-board.dtbo 
 
 dtbotxt-$(CONFIG_ARCH_ROCKCHIP) += \
 	README.rockchip-overlays

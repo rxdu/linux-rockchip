@@ -1,0 +1,140 @@
+/dts-v1/;
+/plugin/;
+
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/pinctrl/rockchip.h>
+#include <dt-bindings/interrupt-controller/irq.h>
+
+/ {
+	metadata {
+		title = "Enable Weston Robot Communication Board interfaces";
+		compatible = "unknown";
+		category = "misc";
+		description = "Provide support 3 CAN, 2 RS485, 2 RS232 and 1 I2C.";
+	};
+
+    fragment@0 {
+		target = <&can1>;
+
+		__overlay__ {
+			status = "okay";
+			pinctrl-names = "default";
+			pinctrl-0 = <&can1m0_pins>;
+		};
+	};
+
+	fragment@1 {
+		target = <&spi4>;
+		__overlay__ {
+			status = "okay";
+			pinctrl-names = "default";
+			pinctrl-0 = <&spi4m1_pins &spi4m1_cs0 &spi4m1_cs1>;
+
+			can3: mcp2515_0@0 {
+				compatible = "microchip,mcp2515";
+				reg = <0>;
+				spi-max-frequency = <10000000>;
+
+				pinctrl-names = "default";
+				pinctrl-0 = <&mcp2515_0_int_pins>;
+
+				interrupt-parent = <&gpio3>;
+				interrupts = <RK_PB3 IRQ_TYPE_EDGE_FALLING>;
+
+				clocks = <&can3_osc>;
+			};
+
+            can4: mcp2515_1@1 {
+				compatible = "microchip,mcp2515";
+				reg = <1>;
+				spi-max-frequency = <10000000>;
+
+				pinctrl-names = "default";
+				pinctrl-0 = <&mcp2515_1_int_pins>;
+
+				interrupt-parent = <&gpio3>;
+				interrupts = <RK_PB4 IRQ_TYPE_EDGE_FALLING>;
+
+				clocks = <&can4_osc>;
+			};
+		};
+	};
+
+	fragment@2 {
+		target = <&pinctrl>;
+		__overlay__ {
+			mcp2515_0 {
+				mcp2515_0_int_pins: mcp2515-0-int-pins {
+					rockchip,pins = <3 RK_PB3 RK_FUNC_GPIO &pcfg_pull_up>;
+				};
+			};
+            mcp2515_1 {	
+                mcp2515_1_int_pins: mcp2515-1-int-pins {
+					rockchip,pins = <3 RK_PB4 RK_FUNC_GPIO &pcfg_pull_up>;
+				};
+			};
+		};
+	};
+
+	fragment@3 {
+		target-path = "/";
+		__overlay__ {
+			can3_osc: can3-osc {
+				compatible = "fixed-clock";
+				#clock-cells = <0>;
+				clock-frequency  = <16000000>;
+			};
+            can4_osc: can4-osc {
+				compatible = "fixed-clock";
+				#clock-cells = <0>;
+				clock-frequency  = <16000000>;
+			};
+		};
+	};
+
+    fragment@4 {
+		target = <&uart0>;
+
+		__overlay__ {
+			status = "okay";
+			pinctrl-0 = <&uart0m0_xfer>;
+		};
+	};
+
+    fragment@5 {
+		target = <&uart4>;
+
+		__overlay__ {
+			status = "okay";
+			pinctrl-0 = <&uart4m2_xfer>;
+		};
+	};
+
+    fragment@6 {
+		target = <&uart6>;
+
+		__overlay__ {
+			status = "okay";
+			pinctrl-0 = <&uart6m1_xfer>;
+		};
+	};
+
+    fragment@7 {
+		target = <&uart7>;
+
+		__overlay__ {
+			status = "okay";
+			pinctrl-0 = <&uart7m2_xfer>;
+		};
+	};
+
+    fragment@8 {
+		target = <&i2c8>;
+
+		__overlay__ {
+			status = "okay";
+			pinctrl-names = "default";
+			pinctrl-0 = <&i2c8m2_xfer>;
+		};
+	};
+};
